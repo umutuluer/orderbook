@@ -19,21 +19,21 @@ class OrderBook
     order.samount = order.price * order.amount
 
     if order.side == BID
-      bid_add(order)
+      add_bid(order)
     elsif order.side == ASK
-      ask_add(order)
+      add_ask(order)
     end
 
     fire()
   end
 
-  def ask_add(order : Order)
+  def add_ask(order : Order)
     @asks << order
     @asks = @asks.sort_by { |order| order.price }
     execute(order)
   end
 
-  def bid_add(order : Order)
+  def add_bid(order : Order)
     @bids << order
     @bids = @bids.sort_by { |order| order.price }
     execute(order)
@@ -207,18 +207,14 @@ class OrderBook
     end
 
     @stops.each_with_index do |stop_item, i|
-      if stop_item.side == ASK
-        if stop_item.stop >= best_ask
-          ask_add(stop_item)
-          stop_item.status = COMPLETE
-          puts "Triggered : #{stop_item.id}"
-        end
-      elsif stop_item.side == BID
-        if stop_item.stop <= best_bid
-          bid_add(stop_item)
-          stop_item.status = COMPLETE
-          puts "Triggered : #{stop_item.id}"
-        end
+      if stop_item.side == ASK && stop_item.stop >= best_ask
+        add_ask(stop_item)
+        stop_item.status = COMPLETE
+        puts "Triggered : #{stop_item.id}"
+      elsif stop_item.side == BID && stop_item.stop <= best_bid
+        add_bid(stop_item)
+        stop_item.status = COMPLETE
+        puts "Triggered : #{stop_item.id}"
       end
     end
   end

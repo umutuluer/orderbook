@@ -14,7 +14,7 @@ struct Order
 
   property status : Int32
 
-  def initialize(*args)
+  def initialize
     @time = Time.now
     @status = 0
   end
