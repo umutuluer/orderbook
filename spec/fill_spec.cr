@@ -5,9 +5,6 @@ require "spec2"
 
 Spec2.describe "Fill" do
   it "write method testing" do
-    fee = Faker::Commerce.price.to_f64
-    side_fee = Faker::Commerce.price.to_f64
-
     fill = Fill.new(
       create_fake_order("bid"),
       create_fake_order(),

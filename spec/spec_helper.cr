@@ -38,7 +38,7 @@ end
 def print_orderbook(orderbook : OrderBook)
   puts "------------------------"
   puts "FILLED-BOOK"
-  orderbook.fills.each do |fill|
+  orderbook.fills.each do |_|
     puts "fill"
   end
 

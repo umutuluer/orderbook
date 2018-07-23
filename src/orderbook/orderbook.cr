@@ -29,13 +29,13 @@ class OrderBook
 
   def add_ask(order : Order)
     @asks << order
-    @asks = @asks.sort_by { |order| order.price }
+    @asks = @asks.sort_by { |ask| ask.price }
     execute(order)
   end
 
   def add_bid(order : Order)
     @bids << order
-    @bids = @bids.sort_by { |order| order.price }
+    @bids = @bids.sort_by { |bid| bid.price }
     execute(order)
   end
 
@@ -206,7 +206,7 @@ class OrderBook
       best_bid = @bids[0].price
     end
 
-    @stops.each_with_index do |stop_item, i|
+    @stops.each_with_index do |stop_item, _|
       if stop_item.side == ASK && stop_item.stop >= best_ask
         add_ask(stop_item)
         stop_item.status = COMPLETE
@@ -227,7 +227,7 @@ class OrderBook
 
   def remove_complete_orders(order_list : Array)
     loop do
-      i = order_list.bsearch_index { |order, i| order.status == COMPLETE }
+      i = order_list.bsearch_index { |order, _| order.status == COMPLETE }
       break if i.nil?
       order_list.delete_at(i)
     end
